@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 
 class TodoApp extends Component {
     render() {
@@ -9,7 +9,8 @@ class TodoApp extends Component {
                     <Switch>
                         <Route path="/" exact component={LoginComponent} />
                         <Route path="/login" component={LoginComponent} />
-                        <Route path="/welcome" component={WelcomeComponent} />
+                        <Route path="/welcome/:name" component={WelcomeComponent} />
+                        <Route path="/todos" component={ListTodosComponent} />
                         <Route component={ErrorComponent} />
                     </Switch>
                 </Router>
@@ -19,11 +20,53 @@ class TodoApp extends Component {
     }
 }
 
+class ListTodosComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            todos: [
+                { id: 1, description: 'Learn React with Java', done: false, targedate: new Date() },
+                { id: 2, description: 'Learn React with FullStack', done: false, targedate: new Date() },
+                { id: 3, description: 'Become a master of FullStack', done: false, targedate: new Date() }
+            ]
+        }
+    }
+    render() {
+        return (
+            <div>
+                <h1>List of Todos : </h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>description</th>
+                            <th>isCompleted?</th>
+                            <th>targedate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.todos.map(todo =>
+                                <tr>
+                                    <td>{todo.id}</td>
+                                    <td>{todo.description}</td>
+                                    <td>{todo.done.toString()}</td>
+                                    <td>{todo.targedate.toString()}</td>
+                                </tr>
+                            )
+                        }
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
+}
+
 class WelcomeComponent extends Component {
     render() {
         return (
             <div>
-                Welcome SouvikDey
+                Welcome {this.props.match.params.name}. You can manage your todos <Link to="/todos">here</Link>
             </div>
         )
     }
@@ -57,7 +100,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if (this.state.username === 'SouvikDey' && this.state.password === 'SouvikDey') {
-            this.props.history.push("/welcome")
+            this.props.history.push(`/welcome/${this.state.username}`)
             //this.setState({ showSuccessMessage: true })
             //this.setState({ hasLoginFailed: false })
         }
