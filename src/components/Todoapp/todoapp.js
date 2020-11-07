@@ -12,6 +12,7 @@ class TodoApp extends Component {
                         <Route path="/login" component={LoginComponent} />
                         <Route path="/welcome/:name" component={WelcomeComponent} />
                         <Route path="/todos" component={ListTodosComponent} />
+                        <Route path="/logout" component={LogoutComponent} />
                         <Route component={ErrorComponent} />
                     </Switch>
                     <FooterComponent />
@@ -42,12 +43,25 @@ class HeaderComponent extends Component {
     }
 }
 
-class FooterComponent extends Component {
+class LogoutComponent extends Component {
     render() {
         return (
             <div>
-                <hr /> Footer
+                <h1>You are logged out</h1>
+                <div className="container">
+                    Thank you for using our Application
+                </div>
             </div>
+        )
+    }
+}
+
+class FooterComponent extends Component {
+    render() {
+        return (
+            <footer className="footer">
+                <span className="text-muted">All Rights Reserved 2018 @Souvik-todo-app</span>
+            </footer>
         )
     }
 }
@@ -67,28 +81,30 @@ class ListTodosComponent extends Component {
         return (
             <div>
                 <h1>List of Todos : </h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>description</th>
-                            <th>isCompleted?</th>
-                            <th>targedate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.state.todos.map(todo =>
-                                <tr>
-                                    <td>{todo.id}</td>
-                                    <td>{todo.description}</td>
-                                    <td>{todo.done.toString()}</td>
-                                    <td>{todo.targedate.toString()}</td>
-                                </tr>
-                            )
-                        }
-                    </tbody>
-                </table>
+                <div className="container">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>description</th>
+                                <th>isCompleted?</th>
+                                <th>targedate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.todos.map(todo =>
+                                    <tr>
+                                        <td>{todo.id}</td>
+                                        <td>{todo.description}</td>
+                                        <td>{todo.done.toString()}</td>
+                                        <td>{todo.targedate.toString()}</td>
+                                    </tr>
+                                )
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         )
     }
@@ -98,7 +114,8 @@ class WelcomeComponent extends Component {
     render() {
         return (
             <div>
-                Welcome {this.props.match.params.name}. You can manage your todos <Link to="/todos">here</Link>
+                <h1>Welcome!</h1>
+                <div> Welcome {this.props.match.params.name}. You can manage your todos <Link to="/todos">here</Link></div>
             </div>
         )
     }
@@ -146,11 +163,14 @@ class LoginComponent extends Component {
     render() {
         return (
             <div>
-                UserName: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}></input>
+                <h1>login</h1>
+                <div className="container">
+                    UserName: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}></input>
                 Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}></input>
-                <button onClick={this.loginClicked}>Login</button>
-                {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
-                {this.state.showSuccessMessage && <div>Login Successful</div>}
+                    <button className="btn btn-success" onClick={this.loginClicked}>Login</button>
+                    {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
+                    {this.state.showSuccessMessage && <div>Login Successful</div>}
+                </div>
             </div>
         )
     }
